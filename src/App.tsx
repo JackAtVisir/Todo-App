@@ -1,44 +1,22 @@
-import { useEffect, useState } from "react";
-import type { Schema } from "../amplify/data/resource";
-import { generateClient } from "aws-amplify/data";
 import { useAuthenticator } from '@aws-amplify/ui-react';
+import { useNavigate } from 'react-router-dom';
 
-const client = generateClient<Schema>();
+const App = () => {
 
-function App() {
-  const [todos, setTodos] = useState<Array<Schema["Todo"]["type"]>>([]);
-  const { user, signOut } = useAuthenticator();
+    const navigate = useNavigate()
 
-  useEffect(() => {
-    client.models.Todo.observeQuery().subscribe({
-      next: (data) => setTodos([...data.items]),
-    });
-  }, []);
+    const { user, signOut } = useAuthenticator();
+    const playGame = () => {navigate("/cookie")}
 
-  function createTodo() {
-    client.models.Todo.create({ content: window.prompt("Todo content") });
-  }
+    return (
 
-    
-  function deleteTodo(id: string) {
-    client.models.Todo.delete({ id })
-  }
-
-  return (
-    <main>
-      <h1>{user?.signInDetails?.loginId}'s todos</h1>
-      <button onClick={createTodo}>+ new</button>
-      <ul>
-        {todos.map((todo) => (
-          <li 
-            onClick={() => deleteTodo(todo.id)}
-            key={todo.id}>{todo.content}
-          </li>
-        ))}
-      </ul> 
-      <button onClick={signOut}>Sign out</button>
-    </main>
-  );
+        <div>
+          <h1>{user?.signInDetails?.loginId}</h1>
+          <button onClick={playGame}>Play Game</button>
+          <button onClick={signOut}>Sign out</button>
+        </div>
+        
+    )
 }
 
-export default App;
+export default App
