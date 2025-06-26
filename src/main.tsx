@@ -7,8 +7,7 @@ import outputs from "../amplify_outputs.json";
 import { Authenticator } from "@aws-amplify/ui-react";
 import "@aws-amplify/ui-react/styles.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-
-import App1 from "./App1.tsx";
+import LoadGame from "./LoadGame.tsx"
 
 Amplify.configure(outputs);
 
@@ -24,8 +23,8 @@ const router = createBrowserRouter([
     element: <Cookie />,
   },
   {
-    path: "/rah",
-    element: <App1 />,
+    path: "/loadGame",
+    element: <LoadGame />,
   },
 ]);
 
