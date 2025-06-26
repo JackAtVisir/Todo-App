@@ -1,5 +1,9 @@
 import { useNavigate } from "react-router-dom"
 import { useState } from "react"
+import type { Schema } from "../amplify/data/resource"
+import { generateClient } from "aws-amplify/data"
+
+const client = generateClient<Schema>()
 
 const Cookie = () => {
 
@@ -8,6 +12,8 @@ const Cookie = () => {
 
     const [scorePerClick, setScorePerClick] = useState(1)
     const [scorePerClickPrice, setScorePerClickPrice] = useState(10)
+
+    const [gambleOdds, setGambleOdds] = useState(1)
 
     const handleClick = () => {setScore(score + scorePerClick)}
 
@@ -21,8 +27,30 @@ const Cookie = () => {
         
         } 
     }
+    
+    const gamble = () => {
+    const random = Math.floor(Math.random() * gambleOdds);
+    if (random === 1) {setScore(score * gambleOdds)}
+    else (setScore(Math.round(score - score/gambleOdds))) 
 
-    const handleSave = () => {}
+    }
+
+    const oddsUp = () => {
+      setGambleOdds(gambleOdds + 1)
+    }
+
+    const oddsDown = () => {
+      setGambleOdds(gambleOdds - 1)
+    }
+
+    const handleSave = async (score: number, scorePerClick: number) => {
+  const result = await client.models.Game.create({
+    gameScore: score,
+    upgrade: scorePerClick
+  })
+  console.log("Created todo:", result.data);
+}
+
     const handleExit = () => {navigate('/')}
 
 
@@ -52,11 +80,16 @@ const Cookie = () => {
         <h2>Upgrades:</h2>
         <p>Points per Click: lvl {scorePerClick} <button onClick={handlePointsPerClickUpgrade}>{scorePerClickPrice}</button></p>
     </div>
-    <button onClick={handleSave}>Save Game</button>
+    <button onClick={gamble}>Gamble</button>
+    <p>Odds 1/{gambleOdds}<button onClick={oddsUp}>⬆</button><button onClick={oddsDown}>⬇</button></p>
+      
+    <button onClick={()=>{handleSave(score, scorePerClick)}}>Save Game</button>
     <button onClick={handleExit}>Exit</button>
   </div>
 );
 
 }
+
+
 
 export default Cookie

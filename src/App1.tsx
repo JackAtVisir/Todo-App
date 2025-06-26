@@ -11,13 +11,14 @@ function App1() {
 
   useEffect(() => {
     client.models.Todo.observeQuery().subscribe({
-      next: (data) => setTodos([...data.items]),
+      next: (data) => {console.log("observeQuery data:", data); setTodos([...data.items])}, 
     });
+    
   }, []);
 
   function createTodo() {
     client.models.Todo.create({ content: window.prompt("Todo content") });
-    console.log(client)
+    console.log('client', client)
   }
 
     
