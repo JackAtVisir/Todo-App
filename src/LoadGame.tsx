@@ -30,18 +30,29 @@ function LoadGame() {
 
   }
 
+   function handleDelete(id: string) {
+    client.models.Game.delete({ id })
+  }
+
   return (
-    <div>
-      <h2>Saved Games</h2>
-      <ul>
-        {games.map((game) => (
-          <li onClick={()=>{handleLoad(game.gameScore ?? 0, game.upgrade ?? 0)}} key={game.id}>
-            Score: {game.gameScore}, Click Points: {game.upgrade}
-          </li>
-        ))}
-      </ul>
+   <div>
+    <h2>Saved Games</h2>
+      {games.length > 0 ? (
+        <ul>
+          {games.map((game) => (
+            <li key={game.id}>
+              Score: {game.gameScore}, Click Points: {game.upgrade}
+              <button onClick={() => handleLoad(game.gameScore ?? 0, game.upgrade ?? 0)}>Load</button>
+              <button onClick={() => handleDelete(game.id)}>Delete</button>
+            </li>
+          ))}
+       </ul>
+      ) : (
+        <p>No Saved Games</p>
+     )}
+     <button onClick={()=>{navigate("/")}}>Home</button>
     </div>
-  );
+  )
 }
 
 export default LoadGame;
