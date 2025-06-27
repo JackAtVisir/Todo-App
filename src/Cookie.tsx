@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useLocation } from "react-router-dom"
 import { useState } from "react"
 import type { Schema } from "../amplify/data/resource"
 import { generateClient } from "aws-amplify/data"
@@ -8,11 +8,15 @@ const client = generateClient<Schema>()
 const Cookie = () => {
 
     const navigate = useNavigate()
-    const [score, setScore] = useState(0)
+    const location = useLocation()
 
-    const [scorePerClick, setScorePerClick] = useState(1)
+    const { loadScore, loadUpgrade } = location.state || {}
+
+    console.log("Load State: ", loadScore, loadUpgrade)
+
+    const [score, setScore] = useState(() => loadScore ?? 0);
+    const [scorePerClick, setScorePerClick] = useState(() => loadUpgrade ?? 1);
     const [scorePerClickPrice, setScorePerClickPrice] = useState(10)
-
     const [gambleOdds, setGambleOdds] = useState(1)
 
     const handleClick = () => {setScore(score + scorePerClick)}
