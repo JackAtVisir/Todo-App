@@ -48,48 +48,166 @@ const Cookie = () => {
     }
 
     const handleSave = async (score: number, scorePerClick: number) => {
-  const result = await client.models.Game.create({
-    gameScore: score,
-    upgrade: scorePerClick
-  })
-  console.log("Created todo:", result.data);
-}
+      const result = await client.models.Game.create({
+        gameScore: score,
+        upgrade: scorePerClick
+      })
+      console.log("Saved Game:", result.data)
+      alert("Saved Game")
+    }
 
     const handleExit = () => {navigate('/')}
 
 
     return (
   <div
+  style={{
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    height: "100vh",
+    backgroundColor: "#fff3e0", // warm cookie background
+    fontFamily: "Comic Sans MS, cursive, sans-serif",
+    color: "#5a3825",
+    padding: "2rem",
+  }}
+>
+  <h1 style={{ fontSize: "2.5rem", marginBottom: "1rem" }}>Score: {score}</h1>
+
+  <button
+    onClick={handleClick}
     style={{
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-      justifyContent: "center",
-      height: "100vh",
+      all: "unset",
+      fontSize: "120px",
+      cursor: "pointer",
+      margin: "20px 0",
+      textShadow: "2px 2px #e0b285",
     }}
   >
-    <h1>Score: {score}</h1>
+    🍪
+  </button>
+
+  <div
+    style={{
+      backgroundColor: "#fbe6c2",
+      border: "2px solid #d6b88d",
+      borderRadius: "12px",
+      padding: "1rem",
+      marginBottom: "1rem",
+      width: "80%",
+      maxWidth: "400px",
+      textAlign: "center",
+      boxShadow: "0 0 8px rgba(0,0,0,0.1)",
+    }}
+  >
+    <h2 style={{ marginBottom: "0.5rem" }}>Upgrades:</h2>
+    <p>
+      Points per Click: lvl {scorePerClick}{" "}
+      <button
+        onClick={handlePointsPerClickUpgrade}
+        style={{
+          backgroundColor: "#d6a15e",
+          border: "none",
+          borderRadius: "6px",
+          padding: "4px 10px",
+          cursor: "pointer",
+          color: "white",
+          fontWeight: "bold",
+          boxShadow: "2px 2px 4px #aa7f4f",
+        }}
+      >
+        {scorePerClickPrice}
+      </button>
+    </p>
+  </div>
+
+  <button
+    onClick={gamble}
+    style={{
+      backgroundColor: "#bc544b",
+      color: "white",
+      border: "none",
+      borderRadius: "8px",
+      padding: "10px 20px",
+      margin: "10px",
+      cursor: "pointer",
+      fontWeight: "bold",
+      boxShadow: "2px 2px 5px #8a3e36",
+    }}
+  >
+    🎲 Gamble
+  </button>
+
+  <p>
+    Odds 1/{gambleOdds}{" "}
     <button
-      onClick={handleClick}
+      onClick={oddsUp}
       style={{
-        all: "unset",
-        fontSize: "100px",
+        marginLeft: "5px",
+        backgroundColor: "#a05f2c",
+        color: "white",
+        border: "none",
+        borderRadius: "6px",
+        padding: "4px 10px",
         cursor: "pointer",
-        margin: "20px 0",
+        fontWeight: "bold",
       }}
     >
-      🍪
+      ⬆
     </button>
-    <div>
-        <h2>Upgrades:</h2>
-        <p>Points per Click: lvl {scorePerClick} <button onClick={handlePointsPerClickUpgrade}>{scorePerClickPrice}</button></p>
-    </div>
-    <button onClick={gamble}>Gamble</button>
-    <p>Odds 1/{gambleOdds}<button onClick={oddsUp}>⬆</button><button onClick={oddsDown}>⬇</button></p>
-      
-    <button onClick={()=>{handleSave(score, scorePerClick)}}>Save Game</button>
-    <button onClick={handleExit}>Exit</button>
-  </div>
+    <button
+      onClick={oddsDown}
+      style={{
+        marginLeft: "5px",
+        backgroundColor: "#a05f2c",
+        color: "white",
+        border: "none",
+        borderRadius: "6px",
+        padding: "4px 10px",
+        cursor: "pointer",
+        fontWeight: "bold",
+      }}
+    >
+      ⬇
+    </button>
+  </p>
+
+  <button
+    onClick={() => handleSave(score, scorePerClick)}
+    style={{
+      backgroundColor: "#6b3e26",
+      color: "white",
+      border: "none",
+      borderRadius: "8px",
+      padding: "10px 20px",
+      marginTop: "10px",
+      cursor: "pointer",
+      fontWeight: "bold",
+      boxShadow: "2px 2px 5px #422515",
+    }}
+  >
+    💾 Save Game
+  </button>
+
+  <button
+    onClick={handleExit}
+    style={{
+      backgroundColor: "#555",
+      color: "white",
+      border: "none",
+      borderRadius: "8px",
+      padding: "10px 20px",
+      marginTop: "10px",
+      cursor: "pointer",
+      fontWeight: "bold",
+      boxShadow: "2px 2px 5px #222",
+    }}
+  >
+    🚪 Exit
+  </button>
+</div>
+
 );
 
 }
